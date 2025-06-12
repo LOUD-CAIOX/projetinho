@@ -21,6 +21,7 @@
             padding: 30px;
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0,0,0,0.2);
+            position: relative;
         }
         .logo {
             width: 150px;
@@ -42,10 +43,61 @@
             border: none;
             border-radius: 25px;
             cursor: pointer;
-            transition: background 0.3s ease;
+            transition: all 0.3s ease;
         }
         button:hover {
             background: #003399;
+        }
+        .tab {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.3);
+            z-index: 10;
+        }
+        .tab h2 {
+            color: #0044cc;
+            margin-top: 0;
+        }
+        .tab input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            color: #666;
+        }
+        .action-btn {
+            background: #0044cc;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+        }
+        .action-btn:hover {
+            background: #003399;
+        }
+        .dev-section {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
         }
     </style>
 </head>
@@ -55,10 +107,140 @@
         <img src="eprotocolo_logo.png" alt="LOGO DO AGV" class="logo">
         <h1>AGV Systems</h1>
 
-        <button>Sou Aluno</button>
-        <button>Sou Professor</button>
-        <button>Sou Coordenador/Diretor</button>
+        <button onclick="openLoginTab('Aluno')">Sou Aluno</button>
+        <button onclick="openAuthTab('Professor')">Sou Professor</button>
+        <button onclick="openAuthTab('Coordenador')">Sou Coordenador</button>
+        
+        <!-- Aba de login -->
+        <div class="tab" id="loginTab">
+            <button class="close-btn" onclick="closeTab('loginTab')">×</button>
+            <h2 id="loginTitle">Login</h2>
+            <input type="text" placeholder="Usuário" id="username">
+            <input type="password" placeholder="Senha" id="password">
+            <button class="action-btn" onclick="login()">Entrar</button>
+        </div>
+        
+        <!-- Aba de autenticação com token -->
+        <div class="tab" id="authTab">
+            <button class="close-btn" onclick="closeTab('authTab')">×</button>
+            <h2 id="authTitle">Autenticação</h2>
+            <input type="text" placeholder="Token de acesso" id="authToken">
+            <button class="action-btn" onclick="verifyToken()">Verificar Token</button>
+        </div>
+        
+        <!-- Seção do desenvolvedor (geração de tokens) -->
+        <div class="dev-section">
+            <h3>Área do Desenvolvedor</h3>
+            <button onclick="generateTokens()">Gerar Novos Tokens</button>
+            <div id="tokensOutput" style="margin-top: 10px; word-break: break-all;"></div>
+        </div>
     </div>
+
+    <script>
+        // Dados armazenados
+        let users = JSON.parse(localStorage.getItem('users')) || [];
+        let tokens = JSON.parse(localStorage.getItem('tokens')) || {
+            professor: "PROF-"+Math.random().toString(36).substr(2, 8).toUpperCase(),
+            coordenador: "COORD-"+Math.random().toString(36).substr(2, 8).toUpperCase()
+        };
+        
+        let currentUserType = '';
+        
+        // Atualiza tokens no localStorage
+        localStorage.setItem('tokens', JSON.stringify(tokens));
+        
+        function openLoginTab(userType) {
+            currentUserType = userType;
+            document.getElementById('loginTitle').textContent = `Login - ${userType}`;
+            document.getElementById('loginTab').style.display = 'block';
+        }
+        
+        function openAuthTab(userType) {
+            currentUserType = userType;
+            document.getElementById('authTitle').textContent = `Autenticação - ${userType}`;
+            document.getElementById('authTab').style.display = 'block';
+        }
+        
+        function closeTab(tabId) {
+            document.getElementById(tabId).style.display = 'none';
+        }
+        
+        function verifyToken() {
+            const inputToken = document.getElementById('authToken').value;
+            const expectedToken = tokens[currentUserType.toLowerCase()];
+            
+            if(inputToken === expectedToken) {
+                openLoginTab(currentUserType);
+                closeTab('authTab');
+            } else {
+                alert('Token inválido! Entre em contato com o administrador.');
+            }
+        }
+        
+        function login() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            const user = users.find(u => u.username === username && u.password === password);
+            
+            if(user) {
+                alert(`Bem-vindo, ${user.name}! (${user.type})`);
+                closeTab('loginTab');
+            } else {
+                // Se não encontrou, oferece cadastro para alunos
+                if(currentUserType === 'Aluno') {
+                    if(confirm('Usuário não encontrado. Deseja se cadastrar como aluno?')) {
+                        registerStudent();
+                    }
+                } else {
+                    alert('Usuário não encontrado!');
+                }
+            }
+        }
+        
+        function registerStudent() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            const newStudent = {
+                name: prompt("Digite seu nome completo:"),
+                username: username,
+                password: password,
+                type: "Aluno",
+                registration: "ALU-"+Math.random().toString(36).substr(2, 6).toUpperCase()
+            };
+            
+            if(newStudent.name) {
+                users.push(newStudent);
+                localStorage.setItem('users', JSON.stringify(users));
+                alert(`Aluno cadastrado com sucesso! Sua matrícula: ${newStudent.registration}`);
+                closeTab('loginTab');
+            }
+        }
+        
+        // Função para gerar novos tokens
+        function generateTokens() {
+            tokens = {
+                professor: "PROF-"+Math.random().toString(36).substr(2, 8).toUpperCase(),
+                coordenador: "COORD-"+Math.random().toString(36).substr(2, 8).toUpperCase()
+            };
+            
+            localStorage.setItem('tokens', JSON.stringify(tokens));
+            
+            document.getElementById('tokensOutput').innerHTML = `
+                <strong>Novos Tokens Gerados:</strong><br>
+                Professor: ${tokens.professor}<br>
+                Coordenador: ${tokens.coordenador}
+            `;
+        }
+        
+        // Mostra os tokens atuais ao carregar
+        document.getElementById('tokensOutput').innerHTML = `
+            <strong>Tokens Atuais:</strong><br>
+            Professor: ${tokens.professor}<br>
+            Coordenador: ${tokens.coordenador}
+        `;
+    </script>
 
 </body>
 </html>
