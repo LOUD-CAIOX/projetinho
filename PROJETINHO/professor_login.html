@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>AGV Systems - Cadastro Professor</title>
+    <style>
+        /* Estilos Gerais */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #0066cc, #003366);
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .container {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            width: 90%;
+            max-width: 400px;
+            padding: 30px;
+            margin: 20px auto;
+            color: #333;
+        }
+        
+        .logo {
+            width: 120px;
+            margin: 0 auto 20px;
+            display: block;
+        }
+        
+        h1 {
+            color: #0066cc;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+        
+        button {
+            background-color: #0066cc;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            padding: 12px;
+            width: 100%;
+            margin: 10px 0;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        button:hover {
+            background-color: #004d99;
+        }
+        
+        input {
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        
+        .back-button {
+            background-color: #666;
+            margin-top: 20px;
+        }
+        
+        .back-button:hover {
+            background-color: #555;
+        }
+        
+        .page {
+            display: none;
+        }
+        
+        .active-page {
+            display: block;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555;
+        }
+        
+        .error-message {
+            color: red;
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Página Principal -->
+    <div id="mainPage" class="container active-page">
+        <img src="logo.png" alt="AGV Systems" class="logo">
+        <h1>AGV Systems - eProtocolo</h1>
+        
+        <button onclick="showPage('alunoPage')">Área do Aluno</button>
+        <button onclick="showPage('professorLoginPage')">Acesso Professor</button>
+        <button onclick="showPage('coordenadorLoginPage')">Acesso Coordenador</button>
+    </div>
+
+    <!-- Página do Aluno -->
+    <div id="alunoPage" class="container page">
+        <div style="background-color: #0066cc; color: white; padding: 20px; margin: -30px -30px 20px -30px; border-radius: 10px 10px 0 0;">
+            <h1>Bem-vindo, Aluno!</h1>
+        </div>
+        <div>
+            <p>Esta é sua área exclusiva. Aqui você pode:</p>
+            <ul style="text-align: left; margin: 15px 0 15px 20px;">
+                <li>Consultar seus protocolos</li>
+                <li>Acessar documentos acadêmicos</li>
+                <li>Verificar horários e calendários</li>
+                <li>Solicitar serviços acadêmicos</li>
+            </ul>
+        </div>
+        <button class="back-button" onclick="showPage('mainPage')">Voltar</button>
+    </div>
+
+    <!-- Página de Login do Professor -->
+    <div id="professorLoginPage" class="container page">
+        <img src="logo.png" alt="AGV Systems" class="logo">
+        <h1>Login Professor</h1>
+        
+        <div>
+            <div class="form-group">
+                <input type="text" placeholder="E-mail" id="professorEmail">
+            </div>
+            <div class="form-group">
+                <input type="password" placeholder="Senha" id="professorSenha">
+            </div>
+            <button onclick="loginProfessor()">Acessar</button>
+            <button onclick="showPage('professorCadastroPage')">Cadastrar Novo Professor</button>
+            <button class="back-button" onclick="showPage('mainPage')">Voltar</button>
+        </div>
+    </div>
+
+    <!-- Página de Cadastro de Professor -->
+    <div id="professorCadastroPage" class="container page">
+        <img src="logo.png" alt="AGV Systems" class="logo">
+        <h1>Cadastro de Professor</h1>
+        
+        <form id="cadastroForm">
+            <div class="form-group">
+                <label for="nomeCompleto">Nome Completo:</label>
+                <input type="text" id="nomeCompleto" required>
+                <div class="error-message" id="nomeError">Por favor, insira seu nome completo</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="cpf">CPF:</label>
+                <input type="text" id="cpf" placeholder="000.000.000-00" required>
+                <div class="error-message" id="cpfError">CPF inválido</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="emailCadastro">E-mail:</label>
+                <input type="email" id="emailCadastro" required>
+                <div class="error-message" id="emailError">E-mail inválido</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="senhaCadastro">Senha:</label>
+                <input type="password" id="senhaCadastro" minlength="6" required>
+                <div class="error-message" id="senhaError">A senha deve ter pelo menos 6 caracteres</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="confirmarSenha">Confirmar Senha:</label>
+                <input type="password" id="confirmarSenha" required>
+                <div class="error-message" id="confirmarSenhaError">As senhas não coincidem</div>
+            </div>
+            
+            <button type="button" onclick="validarCadastro()">Cadastrar</button>
+            <button class="back-button" type="button" onclick="showPage('professorLoginPage')">Voltar</button>
+        </form>
+    </div>
+
+    <!-- Página do Professor (após login) -->
+    <div id="professorPage" class="container page">
+        <div style="background-color: #0066cc; color: white; padding: 20px; margin: -30px -30px 20px -30px; border-radius: 10px 10px 0 0;">
+            <h1>Bem-vindo, Professor!</h1>
+        </div>
+        <div>
+            <p>Área restrita para professores:</p>
+            <ul style="text-align: left; margin: 15px 0 15px 20px;">
+                <li>Registro de frequência</li>
+                <li>Lançamento de notas</li>
+                <li>Gerenciamento de turmas</li>
+                <li>Protocolos acadêmicos</li>
+            </ul>
+        </div>
+        <button class="back-button" onclick="logout('professor')">Sair</button>
+    </div>
+
+    <!-- Página de Login do Coordenador -->
+    <div id="coordenadorLoginPage" class="container page">
+        <img src="logo.png" alt="AGV Systems" class="logo">
+        <h1>Login Coordenador</h1>
+        
+        <div>
+            <div class="form-group">
+                <input type="text" placeholder="E-mail" id="coordenadorEmail">
+            </div>
+            <div class="form-group">
+                <input type="password" placeholder="Senha" id="coordenadorSenha">
+            </div>
+            <button onclick="loginCoordenador()">Acessar</button>
+            <button class="back-button" onclick="showPage('mainPage')">Voltar</button>
+        </div>
+    </div>
+
+    <!-- Página do Coordenador (após login) -->
+    <div id="coordenadorPage" class="container page">
+        <div style="background-color: #0066cc; color: white; padding: 20px; margin: -30px -30px 20px -30px; border-radius: 10px 10px 0 0;">
+            <h1>Bem-vindo, Coordenador!</h1>
+        </div>
+        <div>
+            <p>Área restrita para coordenadores:</p>
+            <ul style="text-align: left; margin: 15px 0 15px 20px;">
+                <li>Gestão acadêmica</li>
+                <li>Relatórios institucionais</li>
+                <li>Aprovação de protocolos</li>
+                <li>Controle docente</li>
+            </ul>
+        </div>
+        <button class="back-button" onclick="logout('coordenador')">Sair</button>
+    </div>
+
+    <script>
+        // Dados de login fictícios
+        const professoresCadastrados = JSON.parse(localStorage.getItem('professores')) || [];
+        const coordenadoresCadastrados = JSON.parse(localStorage.getItem('coordenadores')) || [
+            { email: "coordenador@agv.com", senha: "654321" }
+        ];
+
+        // Função para alternar entre páginas
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active-page');
+            });
+            document.getElementById(pageId).classList.add('active-page');
+        }
+
+        // Função para validar CPF
+        function validarCPF(cpf) {
+            cpf = cpf.replace(/[^\d]+/g,'');
+            if(cpf == '') return false;
+            
+            // Elimina CPFs invalidos conhecidos
+            if (cpf.length != 11 || 
+                cpf == "00000000000" || 
+                cpf == "11111111111" || 
+                cpf == "22222222222" || 
+                cpf == "33333333333" || 
+                cpf == "44444444444" || 
+                cpf == "55555555555" || 
+                cpf == "66666666666" || 
+                cpf == "77777777777" || 
+                cpf == "88888888888" || 
+                cpf == "99999999999")
+                return false;
+                
+            // Valida 1o digito
+            let add = 0;
+            for (let i=0; i < 9; i ++)
+                add += parseInt(cpf.charAt(i)) * (10 - i);
+            let rev = 11 - (add % 11);
+            if (rev == 10 || rev == 11)
+                rev = 0;
+            if (rev != parseInt(cpf.charAt(9)))
+                return false;
+                
+            // Valida 2o digito
+            add = 0;
+            for (let i = 0; i < 10; i ++)
+                add += parseInt(cpf.charAt(i)) * (11 - i);
+            rev = 11 - (add % 11);
+            if (rev == 10 || rev == 11)
+                rev = 0;
+            if (rev != parseInt(cpf.charAt(10)))
+                return false;
+                
+            return true;
+        }
+
+        // Função para formatar CPF
+        function formatarCPF(cpf) {
+            return cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4");
+        }
+
+        // Função para validar o cadastro
+        function validarCadastro() {
+            const nome = document.getElementById('nomeCompleto').value;
+            const cpf = document.getElementById('cpf').value.replace(/\D/g, '');
+            const email = document.getElementById('emailCadastro').value;
+            const senha = document.getElementById('senhaCadastro').value;
+            const confirmarSenha = document.getElementById('confirmarSenha').value;
+            
+            let valido = true;
+            
+            // Validação do nome
+            if (nome.trim() === '' || nome.split(' ').length < 2) {
+                document.getElementById('nomeError').style.display = 'block';
+                valido = false;
+            } else {
+                document.getElementById('nomeError').style.display = 'none';
+            }
+            
+            // Validação do CPF
+            if (!validarCPF(cpf)) {
+                document.getElementById('cpfError').style.display = 'block';
+                valido = false;
+            } else {
+                document.getElementById('cpfError').style.display = 'none';
+            }
+            
+            // Validação do email
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                document.getElementById('emailError').style.display = 'block';
+                valido = false;
+            } else {
+                document.getElementById('emailError').style.display = 'none';
+            }
+            
+            // Validação da senha
+            if (senha.length < 6) {
+                document.getElementById('senhaError').style.display = 'block';
+                valido = false;
+            } else {
+                document.getElementById('senhaError').style.display = 'none';
+            }
+            
+            // Validação da confirmação de senha
+            if (senha !== confirmarSenha) {
+                document.getElementById('confirmarSenhaError').style.display = 'block';
+                valido = false;
+            } else {
+                document.getElementById('confirmarSenhaError').style.display = 'none';
+            }
+            
+            if (valido) {
+                // Cadastra o professor
+                const novoProfessor = {
+                    nome: nome,
+                    cpf: formatarCPF(cpf),
+                    email: email,
+                    senha: senha
+                };
+                
+                professoresCadastrados.push(novoProfessor);
+                localStorage.setItem('professores', JSON.stringify(professoresCadastrados));
+                
+                alert('Cadastro realizado com sucesso!');
+                document.getElementById('cadastroForm').reset();
+                showPage('professorLoginPage');
+            }
+        }
+
+        // Função de login do professor
+        function loginProfessor() {
+            const email = document.getElementById('professorEmail').value;
+            const senha = document.getElementById('professorSenha').value;
+            
+            const professor = professoresCadastrados.find(p => p.email === email && p.senha === senha);
+            
+            if(professor) {
+                showPage('professorPage');
+            } else {
+                alert('Credenciais inválidas! Tente novamente.');
+            }
+        }
+        
+        // Função de login do coordenador
+        function loginCoordenador() {
+            const email = document.getElementById('coordenadorEmail').value;
+            const senha = document.getElementById('coordenadorSenha').value;
+            
+            const coordenador = coordenadoresCadastrados.find(c => c.email === email && c.senha === senha);
+            
+            if(coordenador) {
+                showPage('coordenadorPage');
+            } else {
+                alert('Credenciais inválidas! Tente novamente.');
+            }
+        }
+        
+        // Função de logout
+        function logout(tipo) {
+            if(tipo === 'professor') {
+                document.getElementById('professorEmail').value = '';
+                document.getElementById('professorSenha').value = '';
+            } else {
+                document.getElementById('coordenadorEmail').value = '';
+                document.getElementById('coordenadorSenha').value = '';
+            }
+            showPage('mainPage');
+        }
+
+        // Máscara para CPF
+        document.getElementById('cpf').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            
+            if (value.length > 3) {
+                value = value.replace(/^(\d{3})/, '$1.');
+            }
+            if (value.length > 7) {
+                value = value.replace(/^(\d{3})\.(\d{3})/, '$1.$2.');
+            }
+            if (value.length > 11) {
+                value = value.replace(/^(\d{3})\.(\d{3})\.(\d{3})/, '$1.$2.$3-');
+            }
+            if (value.length > 14) {
+                value = value.substring(0, 14);
+            }
+            
+            e.target.value = value;
+        });
+    </script>
+</body>
+</html>

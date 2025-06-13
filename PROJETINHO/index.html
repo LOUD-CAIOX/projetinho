@@ -1,246 +1,233 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <title>AGV Systems - eProtocolo</title>
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: Arial, sans-serif;
-            background: linear-gradient(to bottom, #00aaff, #0044cc);
-            color: white;
-            text-align: center;
-            height: 100vh;
-        }
-        .container {
-            background: white;
-            color: #333;
-            max-width: 400px;
-            margin: 50px auto;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.2);
-            position: relative;
-        }
-        .logo {
-            width: 150px;
-            margin: 0 auto 20px;
-        }
-        h1 {
-            color: #0044cc;
-            font-size: 24px;
-            margin-bottom: 20px;
-        }
-        button {
-            display: block;
-            width: 100%;
-            margin: 10px 0;
-            padding: 10px;
-            font-size: 16px;
-            background: #0044cc;
-            color: white;
-            border: none;
-            border-radius: 25px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        button:hover {
-            background: #003399;
-        }
-        .tab {
-            display: none;
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 15px rgba(0,0,0,0.3);
-            z-index: 10;
-        }
-        .tab h2 {
-            color: #0044cc;
-            margin-top: 0;
-        }
-        .tab input {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            box-sizing: border-box;
-        }
-        .close-btn {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: none;
-            border: none;
-            font-size: 20px;
-            cursor: pointer;
-            color: #666;
-        }
-        .action-btn {
-            background: #0044cc;
-            color: white;
-            border: none;
-            padding: 10px;
-            border-radius: 5px;
-            cursor: pointer;
-            width: 100%;
-        }
-        .action-btn:hover {
-            background: #003399;
-        }
-        .dev-section {
-            margin-top: 20px;
-            padding-top: 20px;
-            border-top: 1px solid #eee;
-        }
-    </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Login - Sistema de Autenticação</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+  body {
+    margin: 0;
+    background: #001f3f; /* Navy Blue */
+    color: #e0e6f2;
+    font-family: 'Inter', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+  }
+  .login-container {
+    background: rgba(255 255 255 / 0.07);
+    padding: 40px 36px 48px;
+    border-radius: 24px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.75);
+    width: 100%;
+    max-width: 360px;
+  }
+  h1 {
+    font-weight: 700;
+    font-size: 2rem;
+    margin-bottom: 24px;
+    color: #fff;
+    text-align: center;
+  }
+  label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 8px;
+    font-size: 1rem;
+    color: #e0e6f2;
+  }
+  input[type="text"],
+  input[type="password"] {
+    width: 100%;
+    padding: 12px 16px;
+    margin-bottom: 18px;
+    border-radius: 12px;
+    border: none;
+    font-size: 1rem;
+    background: rgba(255 255 255 / 0.14);
+    color: #ffffff;
+    transition: background-color 0.3s ease;
+  }
+  input[type="text"]::placeholder,
+  input[type="password"]::placeholder {
+    color: #cbd5e1;
+  }
+  input[type="text"]:focus,
+  input[type="password"]:focus {
+    outline: 2px solid #4caf50;
+    background: rgba(255 255 255 / 0.22);
+  }
+  button {
+    width: 100%;
+    padding: 14px 0;
+    border-radius: 16px;
+    border: none;
+    background-color: #4caf50;
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 1.15rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  button:hover,
+  button:focus {
+    background-color: #43a047;
+    outline: none;
+  }
+  .message {
+    margin-top: 16px;
+    font-weight: 600;
+    font-size: 1rem;
+    color: #ff6b6b;
+    text-align: center;
+    min-height: 22px;
+  }
+  .link-button {
+    background: none;
+    border: none;
+    color: #83c56a;
+    margin-top: 14px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.95rem;
+    text-decoration: underline;
+    width: 100%;
+  }
+  .link-button:hover,
+  .link-button:focus {
+    color: #a5d185;
+    outline: none;
+  }
+</style>
 </head>
 <body>
+  <div class="login-container" aria-live="polite" aria-atomic="true">
+    <h1 id="form-title">Login</h1>
+    <form id="auth-form" autocomplete="off">
+      <label for="username">Usuário</label>
+      <input type="text" id="username" name="username" placeholder="Digite seu usuário" required autofocus />
+      <label for="password">Senha</label>
+      <input type="password" id="password" name="password" placeholder="Digite sua senha" required />
+      <button type="submit" id="submit-button">Entrar</button>
+    </form>
+    <button class="link-button" id="toggle-register">Não tem uma conta? Cadastre-se</button>
+    <div class="message" id="message-area" role="alert" aria-live="assertive"></div>
+  </div>
+<script>
+  const form = document.getElementById('auth-form');
+  const usernameInput = document.getElementById('username');
+  const passwordInput = document.getElementById('password');
+  const messageArea = document.getElementById('message-area');
+  const toggleRegisterButton = document.getElementById('toggle-register');
+  const formTitle = document.getElementById('form-title');
+  const submitButton = document.getElementById('submit-button');
 
-    <div class="container">
-        <img src="eprotocolo_logo.png" alt="LOGO DO AGV" class="logo">
-        <h1>AGV Systems</h1>
+  let isRegisterMode = false;
 
-        <button onclick="openLoginTab('Aluno')">Sou Aluno</button>
-        <button onclick="openAuthTab('Professor')">Sou Professor</button>
-        <button onclick="openAuthTab('Coordenador')">Sou Coordenador</button>
-        
-        <!-- Aba de login -->
-        <div class="tab" id="loginTab">
-            <button class="close-btn" onclick="closeTab('loginTab')">×</button>
-            <h2 id="loginTitle">Login</h2>
-            <input type="text" placeholder="Usuário" id="username">
-            <input type="password" placeholder="Senha" id="password">
-            <button class="action-btn" onclick="login()">Entrar</button>
-        </div>
-        
-        <!-- Aba de autenticação com token -->
-        <div class="tab" id="authTab">
-            <button class="close-btn" onclick="closeTab('authTab')">×</button>
-            <h2 id="authTitle">Autenticação</h2>
-            <input type="text" placeholder="Token de acesso" id="authToken">
-            <button class="action-btn" onclick="verifyToken()">Verificar Token</button>
-        </div>
-        
-        <!-- Seção do desenvolvedor (geração de tokens) -->
-        <div class="dev-section">
-            <h3>Área do Desenvolvedor</h3>
-            <button onclick="generateTokens()">Gerar Novos Tokens</button>
-            <div id="tokensOutput" style="margin-top: 10px; word-break: break-all;"></div>
-        </div>
-    </div>
+  function showMessage(msg, isError = true) {
+    messageArea.textContent = msg;
+    messageArea.style.color = isError ? '#ff6b6b' : '#83c56a';
+  }
 
-    <script>
-        // Dados armazenados
-        let users = JSON.parse(localStorage.getItem('users')) || [];
-        let tokens = JSON.parse(localStorage.getItem('tokens')) || {
-            professor: "PROF-"+Math.random().toString(36).substr(2, 8).toUpperCase(),
-            coordenador: "COORD-"+Math.random().toString(36).substr(2, 8).toUpperCase()
-        };
-        
-        let currentUserType = '';
-        
-        // Atualiza tokens no localStorage
-        localStorage.setItem('tokens', JSON.stringify(tokens));
-        
-        function openLoginTab(userType) {
-            currentUserType = userType;
-            document.getElementById('loginTitle').textContent = `Login - ${userType}`;
-            document.getElementById('loginTab').style.display = 'block';
-        }
-        
-        function openAuthTab(userType) {
-            currentUserType = userType;
-            document.getElementById('authTitle').textContent = `Autenticação - ${userType}`;
-            document.getElementById('authTab').style.display = 'block';
-        }
-        
-        function closeTab(tabId) {
-            document.getElementById(tabId).style.display = 'none';
-        }
-        
-        function verifyToken() {
-            const inputToken = document.getElementById('authToken').value;
-            const expectedToken = tokens[currentUserType.toLowerCase()];
-            
-            if(inputToken === expectedToken) {
-                openLoginTab(currentUserType);
-                closeTab('authTab');
-            } else {
-                alert('Token inválido! Entre em contato com o administrador.');
-            }
-        }
-        
-        function login() {
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-            
-            const user = users.find(u => u.username === username && u.password === password);
-            
-            if(user) {
-                alert(`Bem-vindo, ${user.name}! (${user.type})`);
-                closeTab('loginTab');
-            } else {
-                // Se não encontrou, oferece cadastro para alunos
-                if(currentUserType === 'Aluno') {
-                    if(confirm('Usuário não encontrado. Deseja se cadastrar como aluno?')) {
-                        registerStudent();
-                    }
-                } else {
-                    alert('Usuário não encontrado!');
-                }
-            }
-        }
-        
-        function registerStudent() {
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-            
-            const newStudent = {
-                name: prompt("Digite seu nome completo:"),
-                username: username,
-                password: password,
-                type: "Aluno",
-                registration: "ALU-"+Math.random().toString(36).substr(2, 6).toUpperCase()
-            };
-            
-            if(newStudent.name) {
-                users.push(newStudent);
-                localStorage.setItem('users', JSON.stringify(users));
-                alert(`Aluno cadastrado com sucesso! Sua matrícula: ${newStudent.registration}`);
-                closeTab('loginTab');
-            }
-        }
-        
-        // Função para gerar novos tokens
-        function generateTokens() {
-            tokens = {
-                professor: "PROF-"+Math.random().toString(36).substr(2, 8).toUpperCase(),
-                coordenador: "COORD-"+Math.random().toString(36).substr(2, 8).toUpperCase()
-            };
-            
-            localStorage.setItem('tokens', JSON.stringify(tokens));
-            
-            document.getElementById('tokensOutput').innerHTML = `
-                <strong>Novos Tokens Gerados:</strong><br>
-                Professor: ${tokens.professor}<br>
-                Coordenador: ${tokens.coordenador}
-            `;
-        }
-        
-        // Mostra os tokens atuais ao carregar
-        document.getElementById('tokensOutput').innerHTML = `
-            <strong>Tokens Atuais:</strong><br>
-            Professor: ${tokens.professor}<br>
-            Coordenador: ${tokens.coordenador}
-        `;
-    </script>
+  function clearMessage() {
+    messageArea.textContent = '';
+  }
 
+  function getUsers() {
+    const usersJSON = localStorage.getItem('users');
+    return usersJSON ? JSON.parse(usersJSON) : {};
+  }
+
+  function saveUsers(users) {
+    localStorage.setItem('users', JSON.stringify(users));
+  }
+
+  function registerUser(username, password) {
+    const users = getUsers();
+    if(users[username]) {
+      showMessage('Usuário já existe. Por favor, faça login.');
+      return false;
+    }
+    users[username] = { password };
+    saveUsers(users);
+    showMessage('Cadastro realizado com sucesso! Agora faça login.', false);
+    return true;
+  }
+
+  function loginUser(username, password) {
+    const users = getUsers();
+    if(!users[username]) {
+      showMessage('Usuário não encontrado. Cadastre-se primeiro.');
+      return false;
+    }
+    if(users[username].password !== password) {
+      showMessage('Senha incorreta.');
+      return false;
+    }
+    localStorage.setItem('loggedInUser', username);
+    return true;
+  }
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    clearMessage();
+    const username = usernameInput.value.trim();
+    const password = passwordInput.value.trim();
+    if(!username || !password){
+      showMessage('Por favor, preencha usuário e senha.');
+      return;
+    }
+    if(isRegisterMode) {
+      if(registerUser(username, password)) {
+        isRegisterMode = false;
+        formTitle.textContent = 'Login';
+        submitButton.textContent = 'Entrar';
+        toggleRegisterButton.textContent = 'Não tem uma conta? Cadastre-se';
+        form.reset();
+        usernameInput.focus();
+      }
+    }
+    else {
+      if(loginUser(username, password)) {
+        showMessage('Login realizado com sucesso! Redirecionando...', false);
+        setTimeout(() => {
+          // Redirect após login
+          window.location.href = 'student-schedule.html';
+        }, 1500);
+      }
+    }
+  });
+
+  toggleRegisterButton.addEventListener('click', () => {
+    isRegisterMode = !isRegisterMode;
+    clearMessage();
+    if(isRegisterMode) {
+      formTitle.textContent = 'Cadastro';
+      submitButton.textContent = 'Registrar';
+      toggleRegisterButton.textContent = 'Já tem uma conta? Faça login';
+      form.reset();
+      usernameInput.focus();
+    } else {
+      formTitle.textContent = 'Login';
+      submitButton.textContent = 'Entrar';
+      toggleRegisterButton.textContent = 'Não tem uma conta? Cadastre-se';
+      form.reset();
+      usernameInput.focus();
+    }
+  });
+
+  // Optional: auto redirect if already logged in
+  window.addEventListener('load', () => {
+    const loggedUser = localStorage.getItem('loggedInUser');
+    if(loggedUser){
+      showMessage(`Você já está logado como ${loggedUser}. Redirecionando...`, false);
+      setTimeout(() => {
+        window.location.href = 'student-schedule.html';
+      }, 1500);
+    }
+  });
+</script>
 </body>
 </html>

@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Agenda de Turmas - Colégio (Dia e Noite)</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap');
+  @import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+
+  :root {
+    --color-bg: #ffffff;
+    --color-text-primary: #111827;
+    --color-text-secondary: #6b7280;
+    --color-primary: #4f46e5;
+    --color-primary-hover: #4338ca;
+    --color-card-bg: #f9fafb;
+    --spacing: 16px;
+    --radius: 12px;
+    --border-color: #e5e7eb;
+  }
+
+  /* Reset */
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    background-color: var(--color-bg);
+    color: var(--color-text-primary);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  header {
+    background-color: var(--color-bg);
+    padding: var(--spacing);
+    border-bottom: 1px solid var(--border-color);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  header h1 {
+    margin: 0;
+    font-weight: 800;
+    font-size: 1.8rem;
+    color: var(--color-primary);
+    user-select: none;
+  }
+
+  main {
+    flex-grow: 1;
+    max-width: 1200px;
+    margin: var(--spacing) auto;
+    padding: 0 var(--spacing);
+    overflow-x: auto;
+  }
+
+  section {
+    margin-bottom: 48px;
+  }
+
+  h2.section-title {
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: var(--color-primary);
+    margin-bottom: 24px;
+    user-select: none;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 700px;
+  }
+
+  thead tr {
+    background-color: var(--color-card-bg);
+  }
+
+  th, td {
+    border: 1px solid var(--border-color);
+    text-align: center;
+    padding: var(--spacing);
+    vertical-align: middle;
+  }
+
+  th {
+    font-weight: 700;
+    color: var(--color-primary);
+    position: sticky;
+    top: 0;
+    background-color: var(--color-card-bg);
+    z-index: 10;
+  }
+
+  tbody tr:nth-child(odd) {
+    background-color: #fafafa;
+  }
+  
+  tbody tr:hover {
+    background-color: #eef2ff;
+  }
+
+  .turma-card {
+    background-color: var(--color-bg);
+    border-radius: var(--radius);
+    box-shadow: 0 2px 6px rgba(79, 70, 229, 0.1);
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    min-width: 150px;
+    max-width: 180px;
+    margin: 0 auto;
+  }
+
+  .turma-name {
+    font-weight: 600;
+    font-size: 1rem;
+    color: var(--color-primary);
+    text-align: center;
+  }
+
+  .btn-view {
+    background-color: var(--color-primary);
+    color: white;
+    border: none;
+    border-radius: var(--radius);
+    font-weight: 600;
+    font-size: 0.9rem;
+    padding: 8px 12px;
+    cursor: pointer;
+    display: inline-flex;
+    gap: 6px;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    user-select: none;
+    transition: background-color 0.3s ease;
+  }
+
+  .btn-view:hover,
+  .btn-view:focus {
+    background-color: var(--color-primary-hover);
+    outline: none;
+  }
+
+  .material-icons {
+    font-family: 'Material Icons';
+    font-weight: normal;
+    font-style: normal;
+    font-size: 18px;
+    line-height: 1;
+    letter-spacing: normal;
+    text-transform: none;
+    display: inline-block;
+    white-space: nowrap;
+    direction: ltr;
+    -webkit-font-feature-settings: 'liga';
+    -webkit-font-smoothing: antialiased;
+  }
+
+  footer {
+    text-align: center;
+    font-size: 0.875rem;
+    color: var(--color-text-secondary);
+    padding: var(--spacing);
+    user-select: none;
+  }
+
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    main {
+      padding: 0 8px;
+    }
+    .turma-card {
+      min-width: 120px;
+      max-width: 140px;
+      padding: 8px;
+    }
+    .btn-view {
+      padding: 6px 10px;
+      font-size: 0.85rem;
+    }
+    thead th {
+      font-size: 0.9rem;
+    }
+  }
+</style>
+</head>
+<body>
+<header>
+  <h1>Agenda de Turmas - Colégio (Dia e Noite)</h1>
+</header>
+<main>
+  <section aria-labelledby="dia-title">
+    <h2 id="dia-title" class="section-title">Turmas - Ano Letivo Diurno</h2>
+    <table aria-describedby="descr-dias">
+      <caption id="descr-dias" class="sr-only">Tabela de turmas e horários para o turno diurno</caption>
+      <thead>
+        <tr>
+          <th>Ano / Curso</th>
+          <th>Médio Normal</th>
+          <th>Desenvolvimento de Sistemas</th>
+          <th>Portos</th>
+          <th>Bioeconomia</th>
+          <th>Administração</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th scope="row">1º</th>
+          <td>
+            <div class="turma-card">
+              <div class="turma-name">1º Médio Normal</div>
+              <a href="turma-1-normal.html" class="btn-view" aria-label="Ver horário da turma 1 médio normal">
+                Ver Horário
+                <span class="material-icons" aria-hidden="true">schedule</span>
+              </a>
+            </div>
+          </td>
+          <td>
+            <div class="turma-card">
+              <div class="turma-name">1º Desenvolvimento de Sistemas</div>
+              <a href="turma-1-ds.html" class="btn-view" aria-label="Ver horário da turma 1 desenvolvimento de sistemas">
+                Ver Horário
+                <span class="material-icons" aria-hidden="true">schedule</span>
+              </a>
+            </div>
+          </td>
+          <td>
+            <div class="turma-card">
+              <div class="turma-name">1º Portos</div>
+              <a href="turma-1-portos.html" class="btn-view" aria-label="Ver horário da turma 1 portos">
+                Ver Horário
+                <span class="material-icons" aria-hidden="true">schedule</span>
+              </a>
+            </div>
+          </td>
+          <td>
+            <div class="turma-card">
+              <div class="turma-name">1º Bioeconomia</div>
+              <a href="turma-1-bioeconomia.html" class="btn-view" aria-label="Ver horário da turma 1 bioeconomia">
+                Ver Horário
+                <span class="material-icons" aria-hidden="true">schedule</span>
+              </a>
+            </div>
+          </td>
+          <td>
+            <div class="turma-card">
+              <div class="turma-name">1º Administração</div>
+              <a href="turma-1-administracao.html" class="btn-view" aria-label="Ver horário da turma 1 administração">
+                Ver Horário
+                <span class="material-icons" aria-hidden="true">schedule</span>
+              </a>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <th scope="row">2º</th>
+          <td>
+            <div class="turma-card">
+              <div class="turma-name">2º Médio Normal</div>
+              <a href="turma-2-normal.html" class="btn-view" aria-label="Ver horário da turma 2 médio normal">
+                Ver Horário
+                <span class="material-icons" aria-hidden="true">schedule</span>
+              </a>
+            </div>
+          </td>
+          <td>
+            <div class="turma-card">
+              <div class="turma-name">2º Desenvolvimento de Sistemas</div>
+              <a href="turma-2-ds.html" class="btn-view" aria-label="Ver horário da turma 2 desenvolvimento de sistemas">
+                Ver Horário
+                <span class="material-icons" aria-hidden="true">schedule</span>
+              </a>
+            </div>
+          </td>
+          <td>
+            <div class="turma-card">
+              <div class="turma-name">2º Portos</div>
+              <a href="turma-2-portos.html" class="btn-view" aria-label="Ver horário da turma 2 portos">
+                Ver Horário
+                <span class="material-icons" aria-hidden="true">schedule</span>
+              </a>
+            </div>
+          </td>
+          <td>
+            <div class="turma-card">
+              <div class="turma-name">2º Bioeconomia</div>
+              <a href="turma-2-bioeconomia.html" class="btn-view" aria-label="Ver horário da turma 2 bioeconomia">
+                Ver Horário
+                <span class="material-icons" aria-hidden="true">schedule</span>
+              </a>
+            </div>
+          </td>
+          <td>
+            <div class="turma-card">
+              <div class="turma-name">2º Administração</div>
+              <a href="turma-2-administracao.html" class="btn-view" aria-label="Ver horário da turma 2 administração">
+                Ver Horário
+                <span class="material-icons" aria-hidden="true">schedule</span>
+              </a>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <th scope="row">3º</th>
+          <td>
+            <div class="turma-card">
+              <div class="turma-name">3º Médio Normal</div>
+              <a href="turma-3-normal.html" class="btn-view" aria-label="Ver horário da turma 3 médio normal">
+                Ver Horário
+                <span class="material-icons" aria-hidden="true">schedule</span>
+              </a>
+            </div>
+          </td>
+          <td>
+            <div class="turma-card">
+              <div class="turma-name">3º Desenvolvimento de Sistemas</div>
+              <a href="turma-3-ds.html" class="btn-view" aria-label="Ver horário da turma 3 desenvolvimento de sistemas">
+                Ver Horário
+                <span class="material-icons" aria-hidden="true">schedule</span>
+              </a>
+            </div>
+          </td>
+          <td>
+            <div class="turma-card">
+              <div class="turma-name">3º Portos</div>
+              <a href="turma-3-portos.html" class="btn-view" aria-label="Ver horário da turma 3 portos">
+                Ver Horário
+                <span class="material-icons" aria-hidden="true">schedule</span>
+              </a>
+            </div>
+          </td>
+          <td>
+            <div class="turma-card">
+              <div class="turma-name">3º Bioeconomia</div>
+              <a href="turma-3-bioeconomia.html" class="btn-view" aria-label="Ver horário da turma 3 bioeconomia">
+                Ver Horário
+                <span class="material-icons" aria-hidden="true">schedule</span>
+              </a>
+            </div>
+          </td>
+          <td>
+            <div class="turma-card">
+              <div class="turma-name">3º Administração</div>
+              <a href="turma-3-administracao.html" class="btn-view" aria-label="Ver horário da turma 3 administração">
+                Ver Horário
+                <span class="material-icons" aria-hidden="true">schedule</span>
+              </a>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+  <section aria-labelledby="noite-title">
+    <h2 id="noite-title" class="section-title">Turmas - Ano Letivo Noturno</h2>
+    <table aria-describedby="descr-noite">
+      <caption id="descr-noite" class="sr-only">Tabela de turmas e horários para o turno noturno</caption>
+      <thead>
+        <tr>
+          <th>Ano / Curso</th>
+          <th>Médio Normal</th>
+          <th>Segurança do Trabalho</th>
+          <th>Enfermagem</th>
+          <th>Portos</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th scope="row">1º</th>
+          <td>
+            <div class="turma-card">
+              <div class="turma-name">1º Médio Normal</div>
+              <a href="turma-1-normal.html" class="btn-view" aria-label="Ver horário da turma 1 médio normal">
+                Ver Horário
+                <span class="material-icons" aria-hidden="true">schedule</span>
+              </a>
+            </div>
+          </td>
+          <td>
+            <div class="turma-card">
+              <div class="turma-name">1º Segurança do Trabalho</div>
+              <a href="turma-1-seguranca.html" class="btn-view" aria-label="Ver horário da turma 1 segurança do trabalho">
+                Ver Horário
+                <span class="material-icons" aria-hidden="true">schedule</span>
+              </a>
+            </div>
+          </td>
+          <td>
+            <div class="turma-card">
+              <div class="turma-name">1º Enfermagem</div>
+              <a href="turma-1-enfermagem.html" class="btn-view" aria-label="Ver horário da turma 1 enfermagem">
+                Ver Horário
+                <span class="material-icons" aria-hidden="true">schedule</span>
+              </a>
+            </div>
+          </td>
+          <td>
+            <div class="turma-card">
+              <div class="turma-name">1º Portos</div>
+              <a href="turma-1-portos.html" class="btn-view" aria-label="Ver horário da turma 1 portos">
+                Ver Horário
+                <span class="material-icons" aria-hidden="true">schedule</span>
+              </a>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <th scope="row">2º</th>
+          <td>
+            <div class="turma-card">
+              <div class="turma-name">2º Médio Normal</div>
+              <a href="turma-2-normal.html" class="btn-view" aria-label="Ver horário da turma 2 médio normal">
+                Ver Horário
+                <span class="material-icons" aria-hidden="true">schedule</span>
+              </a>
+            </div>
+          </td>
+          <td>
+            <div class="turma-card">
+              <div class="turma-name">2º Segurança do Trabalho</div>
+              <a href="turma-2-seguranca.html" class="btn-view" aria-label="Ver horário da turma 2 segurança do trabalho">
+                Ver Horário
+                <span class="material-icons" aria-hidden="true">schedule</span>
+              </a>
+            </div>
+          </td>
+          <td>
+            <div class="turma-card">
+              <div class="turma-name">2º Enfermagem</div>
+              <a href="turma-2-enfermagem.html" class="btn-view" aria-label="Ver horário da turma 2 enfermagem">
+                Ver Horário
+                <span class="material-icons" aria-hidden="true">schedule</span>
+              </a>
+            </div>
+          </td>
+          <td>
+            <div class="turma-card">
+              <div class="turma-name">2º Portos</div>
+              <a href="turma-2-portos.html" class="btn-view" aria-label="Ver horário da turma 2 portos">
+                Ver Horário
+                <span class="material-icons" aria-hidden="true">schedule</span>
+              </a>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <th scope="row">3º</th>
+          <td>
+            <div class="turma-card">
+              <div class="turma-name">3º Médio Normal</div>
+              <a href="turma-3-normal.html" class="btn-view" aria-label="Ver horário da turma 3 médio normal">
+                Ver Horário
+                <span class="material-icons" aria-hidden="true">schedule</span>
+              </a>
+            </div>
+          </td>
+          <td>
+            <div class="turma-card">
+              <div class="turma-name">3º Segurança do Trabalho</div>
+              <a href="turma-3-seguranca.html" class="btn-view" aria-label="Ver horário da turma 3 segurança do trabalho">
+                Ver Horário
+                <span class="material-icons" aria-hidden="true">schedule</span>
+              </a>
+            </div>
+          </td>
+          <td>
+            <div class="turma-card">
+              <div class="turma-name">3º Enfermagem</div>
+              <a href="turma-3-enfermagem.html" class="btn-view" aria-label="Ver horário da turma 3 enfermagem">
+                Ver Horário
+                <span class="material-icons" aria-hidden="true">schedule</span>
+              </a>
+            </div>
+          </td>
+          <td>
+            <div class="turma-card">
+              <div class="turma-name">3º Portos</div>
+              <a href="turma-3-portos.html" class="btn-view" aria-label="Ver horário da turma 3 portos">
+                Ver Horário
+                <span class="material-icons" aria-hidden="true">schedule</span>
+              </a>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+</main>
+<footer>
+  &copy; 2024 Colégio - Todos os direitos reservados.
+</footer>
+</body>
+</html>
+
